@@ -423,50 +423,58 @@ public class Schema1 {
 	// ///////////////////////////////////////// Data Population Method
 	// //////////////////////////////////////////////////////
 	public static void populateDepartment(Connection conn) {
+		// Insert 60 departments
+		// Naming: DEPARTMENT_X (department X)
+		// The first department is called CSEN (for the query)
+		
 		for (int i = 1; i <= 60; i++) {
-			if(i == 1) {
-				if (insertDepartment(i, "CSEN", i, conn) == 0) {
-					System.err.println("insertion of record " + i + " failed");
-					break;
-				} 
-				else {
-					System.out.println("insertion was successful");
-				}
-			}
+			if (insertDepartment(i, i==1 ? "CSEN" : "DEPARTMENT_" + i, i, conn) == 0) {
+				System.err.println("insertion of record " + i + " failed");
+				break;
+			} 
 			else {
-				if (insertDepartment(i, "DEPT_" + i, i, conn) == 0) {
-					System.err.println("insertion of record " + i + " failed");
-					break;
-				} 
-				else {
-					System.out.println("insertion was successful");
-				}
+				System.out.println("insertion was successful");
 			}
 		}
 	}
 
 	public static void populateInstructor(Connection conn) {
-		for (int i = 1; i < 10000; i++) {
-			if (insertInstructor(i, "Name" + i, i, "CS" + i, conn) == 0) {
-				System.err.println("insertion of record " + i + " failed");
-				break;
-			} else
-				System.out.println("insertion was successful");
+		// Insert 25 instructions for each of the 60 departments
+		// Naming: INSTRUCTOR_X_Y (instructor X of department Y)
+		// The instructors of the first department are called INSTRUCTOR_X_CSEN
+		
+		for (int i = 1; i <= 60; i++) {
+			for(int j = 1; j <= 25; j++) {
+				if (insertInstructor((i-1)*25 + j, 
+					i==1 ? "INSTRUCTOR_" + j + "_CSEN" : "INSTRUCTOR_" + j + "_" + i, i,
+					i==1 ? "CSEN" : "DEPARTMENT_" + i, conn) == 0) {
+					System.err.println("insertion of record " + i + " failed");
+					break;
+				} else
+					System.out.println("insertion was successful");
+			}
 		}
 	}
 
 	public static void populateClassroom(Connection conn) {
-		for (int i = 1; i < 10000; i++) {
-			if (insertClassroom(i, i, 100 + i, conn) == 0) {
-				System.err.println("insertion of record " + i + " failed");
-				break;
-			} else
-				System.out.println("insertion was successful");
+		// 10 buildings with 100 rooms each
+		// Capacity is 100 for all rooms
+		
+		for (int i = 1; i <= 10; i++) {
+			for (int j = 1; j <= 100; j++) {
+				if (insertClassroom(i, j, 100, conn) == 0) {
+					System.err.println("insertion of record " + i + " failed");
+					break;
+				} else
+					System.out.println("insertion was successful");
+			}
 		}
 	}
 
 	@SuppressWarnings("deprecation")
 	public static void populateTimeSlot(Connection conn) {
+		// We don't change anything here since it isn't required
+		
 		for (int i = 1; i < 10000; i++) {
 			if (insertTimeSlot(i, "day" + i, new Time(12, 0, 0), new Time(13,
 					0, 0), conn) == 0) {
@@ -478,28 +486,49 @@ public class Schema1 {
 	}
 
 	public static void populateStudent(Connection conn) {
-		for (int i = 1; i < 10000; i++) {
-			if (insertStudent(i, "name" + i, i, "CS" + i, i, conn) == 0) {
-				System.err.println("insertion of record " + i + " failed");
-				break;
-			} else
-				System.out.println("insertion was successful");
+		// Insert 1250 students for each of the 60 departments
+		// Naming: STUDENT_X_Y (Student X of Department Y)
+		// The students of the first department are called STUDENT_X_CSEN
+		// STUDENT_X_Y has instructor INSTRUCTOR_X%25_Y where if X%25 == 0 he has INSTRUCTOR_25_Y
+		// This is of course specified by ID so no need to handle first department
+		
+		for (int i = 1; i <= 60; i++) {
+			for (int j = 1; j<= 1250; j++) {
+				if (insertStudent((i-1)*1250 + j,
+					i==1 ? "STUDENT_" + j + "_CSEN" : "STUDENT_" + j + "_" + i, i,
+					i==1 ? "CSEN" : "DEPARTMENT_" + i,
+					(i-1)*25 + (j%25==0 ? 25: j%25), conn) == 0) {
+					System.err.println("insertion of record " + i + " failed");
+					break;
+				} else
+					System.out.println("insertion was successful");
+			}
 		}
 	}
 
 	public static void populateCourse(Connection conn) {
-		for (int i = 1; i < 10000; i++) {
-			if (insertCourse(i, "CSEN" + i, i, "CS" + i, conn) == 0) {
-				System.err.println("insertion of record " + i + " failed");
-				break;
-			} else
-				System.out.println("insertion was successful");
+		// Insert 25 courses for each of the 60 departments
+		// Naming: COURSE_X_Y (Course X of Department Y)
+		// The courses of the first department are called COURSE_X_CSEN
+		
+		for (int i = 1; i <= 60; i++) {
+			for(int j = 1; j <= 25 ; j++) {
+				if (insertCourse((i-1)*25 + j,
+					i==1 ? "COURSE_" + j + "_CSEN" : "COURSE_" + j + "_" + i, i,
+					i==1 ? "CSEN" : "DEPARTMENT_" + i, conn) == 0) {
+					System.err.println("insertion of record " + i + " failed");
+					break;
+				} else
+					System.out.println("insertion was successful");
+			}
 		}
 	}
 
 	public static void populatePrerequiste(Connection conn) {
-		for (int i = 1; i < 10000; i++) {
-			if (insertPrerequiste(i, i, conn) == 0) {
+		// Every course of the 1500 has itself as a prerequisite
+		
+		for (int i = 1; i < 1500; i++) {
+			if (insertPrerequiste(i%1500==0 ? 1500 : i%1500, i%1500==0 ? 1500 : i%1500, conn) == 0) {
 				System.err.println("insertion of record " + i + " failed");
 				break;
 			} else
@@ -508,23 +537,28 @@ public class Schema1 {
 	}
 
 	public static void populateSection(Connection conn) {
-		int j = 1;
+		// We have 10 semesters and 5 years for a total of 250 records per semester per year
+		// Sections are divided almost equally among instructors, courses, rooms and buildings
+		
 		for (int i = 1; i < 10000; i++) {
-			if (insertSection(i, i, 2019, i, i, j, j, conn) == 0) {
+			if (insertSection(i, i%10==0 ? 10 : i%10, 2020 + i%5,
+				i%1500==0 ? 1500 : i%1500, i%1500==0 ? 1500 : i%1500,
+				i%10==0 ? 10 : i%10, i%100==0 ? 100 : i%10, conn) == 0) {
 				System.err.println("insertion of record " + i + " failed");
 				break;
 			} else
 				System.out.println("insertion was successful");
-			j++;
 		}
 	}
 
 	public static void populateTakes(Connection conn) {
+		// Each student has 8 sections in various semesters
+		
 		double j = 0.7;
 		for (int i = 1; i < 10000; i++) {
 			if (j == 5)
 				j = 0.7;
-			if (insertTakes(i, i, j, conn) == 0) {
+			if (insertTakes(i%1250==0 ? 1250 : i%1250, i, j, conn) == 0) {
 				System.err.println("insertion of record " + i + " failed");
 				break;
 			} else
@@ -534,6 +568,8 @@ public class Schema1 {
 	}
 
 	public static void populateSectionTime(Connection conn) {
+		// We don't change anything here since it isn't required
+		
 		for (int i = 1; i < 10000; i++) {
 			if (insertSectionTime(i, i, conn) == 0) {
 				System.err.println("insertion of record " + i + " failed");
