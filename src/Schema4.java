@@ -371,9 +371,14 @@ public class Schema4 {
 	////////////////////////////////////////////////////////// Data Population Methods ////////////////////////////////////////////////////////// 
 	 @SuppressWarnings("deprecation")
 	public static void populateMovie(Connection conn) {
-		 for (int i = 1; i < 10000; i++) {
-
-				if (insertMovie(i, "Movie" + i,i, i, "EN", new Date(22,1,1999), "US", conn) == 0) {
+		 // Insert 100k movies
+		 // Naming: MOVIE_X
+		 // id = 1 -> Annie Hall
+		 // id = 2 -> Eyes Wide Shut
+		 
+		 for (int i = 1; i <= 100000; i++) {
+				if (insertMovie(i, i==1 ? "Annie Hall" : i==2 ? "Eyes Wide Shut" : "MOVIE_" + i,
+					i, i, "EN", new Date(22,1,1999), "US", conn) == 0) {
 					System.err.println("insertion of record " + i + " failed");
 					break;
 				} else
@@ -382,19 +387,26 @@ public class Schema4 {
 	 }
 	 
 		public static void populateReviewer(Connection conn) {
+			// Insert 10k reviewers
+			// Naming: REVIEWER_X
+			
 			 for (int i = 1; i < 10000; i++) {
 
-					if (insertReviewer(i, "Name" + i, conn) == 0) {
+					if (insertReviewer(i, "REVIEWER_" + i, conn) == 0) {
 						System.err.println("insertion of record " + i + " failed");
 						break;
 					} else
 						System.out.println("insertion was successful");
 				}
 		 }
+		
 		public static void populateGenres(Connection conn) {
+			// Insert 10k genres
+			// Naming: GENRE_X
+			
 			 for (int i = 1; i < 10000; i++) {
 
-					if (insertGenres(i, "Gnere" + i, conn) == 0) {
+					if (insertGenres(i, "GENRE_" + i, conn) == 0) {
 						System.err.println("insertion of record " + i + " failed");
 						break;
 					} else
@@ -402,21 +414,30 @@ public class Schema4 {
 				}
 		 }
 		public static void populateActor(Connection conn) {
-			 for (int i = 1; i < 10000; i++) {
+			// Insert 120k actors
+			// Naming: ACTOR_X
+			
+			 for (int i = 1; i <= 120000; i++) {
                      String result = "M";
-                     if (i > 5000) 
+                     if (i > 60000) 
                     	 result = "F";
-					if (insertActor(i, "Actor" + i,"Actor" + i,result, conn) == 0) {
+					if (insertActor(i, "ACTOR_" + i,"ACTOR_" + i,result, conn) == 0) {
 						System.err.println("insertion of record " + i + " failed");
 						break;
 					} else
 						System.out.println("insertion was successful");
-				}
+			}
 		 }
+		
 		public static void populateDirector(Connection conn) {
-			 for (int i = 1; i < 10000; i++) {
+			// Insert 6k directors
+			// Naming: DIRECTOR_X
+			// ID = 1 -> Woddy Allen
+			
+			 for (int i = 1; i <= 6000; i++) {
                    
-					if (insertDirector(i, "Actor" + i,"Actor" + i, conn) == 0) {
+					if (insertDirector(i, i==1 ? "Woddy" : "DIRECTOR_" + i,
+						i==1 ? "Allen" : "DIRECTOR_" + i, conn) == 0) {
 						System.err.println("insertion of record " + i + " failed");
 						break;
 					} else
@@ -425,19 +446,25 @@ public class Schema4 {
 		 }
 		
 		public static void populateMovieDirection(Connection conn) {
+			// Insert 10k movie directions the first 350 of which are directed by Woddy Allen
+			// Hence Eyes Wide Shut was directed by Woddy Allen
+			
 			 for (int i = 1; i < 10000; i++) {
 
-					if (insertMovieDirection(i, i, conn) == 0) {
+					if (insertMovieDirection( i<=350 ? 1 : i , i, conn) == 0) {
 						System.err.println("insertion of record " + i + " failed");
 						break;
 					} else
 						System.out.println("insertion was successful");
 				}
 		 }
+		
 		public static void populateMovieCast(Connection conn) {
+			// Insert 10k movie casts the first 222 of which are the movie Annie Hall
+			
 			 for (int i = 1; i < 10000; i++) {
                   
-					if (insertMovieCast(i,  i,"Actor" + i, conn) == 0) {
+					if (insertMovieCast(i, i<=222 ? 1 : i,"ROLE_" + i, conn) == 0) {
 						System.err.println("insertion of record " + i + " failed");
 						break;
 					} else
