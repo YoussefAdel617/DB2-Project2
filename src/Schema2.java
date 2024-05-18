@@ -281,64 +281,73 @@ public class Schema2 {
 	 
 	 @SuppressWarnings("deprecation")
 	public static void populateDepartment(Connection conn) {
-		 for (int i = 1; i < 10000; i++) {
-				if (insertDepartment("Department" + i, i,i,new Date(1,1,1990), conn) == 0) {
+		 // Inserts 150 departments 
+		 // Naming: DEPARTMENT_X
+		 
+		 for (int i = 1; i <= 150; i++) {
+				if (insertDepartment("DEPARTMENT_" + i, i,i,new Date(1,1,1990), conn) == 0) {
 					System.err.println("insertion of record " + i + " failed");
 					break;
 				} else
 					System.out.println("insertion was successful");
 			}
 	 }
-		public static void populateDeptLocations(Connection conn) {
-			 for (int i = 1; i < 10000; i++) {
-					if (insertDeptLocations(i, "Location" + i, conn) == 0) {
-						System.err.println("insertion of record " + i + " failed");
-						break;
-					} else
-						System.out.println("insertion was successful");
-				}
-		 }
+	 
+	public static void populateDeptLocations(Connection conn) {
+		// Inserts 150 locations for the 150 departments
+		// Naming: LOCATION_X
 		
-		public static void populateProject(Connection conn) {
-			 for (int i = 1; i < 10000; i++) {
-					if (insertProject("Project" + i, i,"Location1" + i,i, conn) == 0) {
-						System.err.println("insertion of record " + i + " failed");
-						break;
-					} else
-						System.out.println("insertion was successful");
-				}
-		 }
-		public static void populateWorksOn(Connection conn) {
-			 for (int i = 1; i < 10000; i++) {
-					if (insertWorksOn(i, i, i, conn) == 0) {
-						System.err.println("insertion of record " + i + " failed");
-						break;
-					} else
-						System.out.println("insertion was successful");
-				}
-		 }
-		@SuppressWarnings("deprecation")
-		public static void populateDependent(Connection conn) {
-			 for (int i = 1; i < 10000; i++) {
-				 String result = "F";
-				 if (i > 5000) 
-					 result = "M";
-					if (insertDependent(i, "Name" + i, result,new Date(1,1,1999),"child", conn) == 0) {
-						System.err.println("insertion of record " + i + " failed");
-						break;
-					} else
-						System.out.println("insertion was successful");
-				}
-		 }
+		 for (int i = 1; i <= 150; i++) {
+				if (insertDeptLocations(i, "LOCATION_" + i, conn) == 0) {
+					System.err.println("insertion of record " + i + " failed");
+					break;
+				} else
+					System.out.println("insertion was successful");
+			}
+	 }
+	
+	public static void populateProject(Connection conn) {
+		 for (int i = 1; i < 10000; i++) {
+				if (insertProject("Project" + i, i,"Location1" + i,i, conn) == 0) {
+					System.err.println("insertion of record " + i + " failed");
+					break;
+				} else
+					System.out.println("insertion was successful");
+			}
+	 }
+	
+	public static void populateWorksOn(Connection conn) {
+		 for (int i = 1; i < 10000; i++) {
+				if (insertWorksOn(i, i, i, conn) == 0) {
+					System.err.println("insertion of record " + i + " failed");
+					break;
+				} else
+					System.out.println("insertion was successful");
+			}
+	 }
+	
+	@SuppressWarnings("deprecation")
+	public static void populateDependent(Connection conn) {
+		// 600 dependents for the first 600 employees with the same first name and sex (M)
+		// This satisfies queries 4 & 5
 		
-		public static void insertSchema2(Connection connection) {
-			populateEmployee(connection);
-			populateDepartment(connection);
-			populateDeptLocations(connection);
-			populateProject(connection);
-			populateWorksOn(connection);
-			populateDependent(connection);
+		 for (int i = 1; i < 600; i++) {
+			if (insertDependent(i, "EMPLOYEE_" + i, "M",new Date(1,1,1999),"child", conn) == 0) {
+				System.err.println("insertion of record " + i + " failed");
+				break;
+			} else
+				System.out.println("insertion was successful");
 		}
+	 }
+	
+	public static void insertSchema2(Connection connection) {
+		populateEmployee(connection);
+		populateDepartment(connection);
+		populateDeptLocations(connection);
+		populateProject(connection);
+		populateWorksOn(connection);
+		populateDependent(connection);
+	}
 		
 	public static void main(String[] argv) {
 

@@ -131,33 +131,48 @@ public class Schema3 {
 	 
 	 ///////////////////////////////////////////////////////// Data Population Methods //////////////////////////////////////////////////////////
 	 public static void populateSailor(Connection conn) {
-		 for (int i = 1; i < 10000; i++) {
-				if (insertSailor(i, "Sailor" + i,i,i, conn) == 0) {
+		 // Inserts 19000 sailors
+		 // Naming: SAILOR_X
+		 
+		 for (int i = 1; i <= 19000; i++) {
+				if (insertSailor(i, "SAILOR_" + i,i,i, conn) == 0) {
 					System.err.println("insertion of record " + i + " failed");
 					break;
 				} else
 					System.out.println("insertion was successful");
-			}
+		}
 	 }
+	 
 	 public static void populateBoat(Connection conn) {
-		 for (int i = 1; i < 10000; i++) {
-				if (insertBoat(i, "Boat" + i,"Red", conn) == 0) {
+		 // Inserts 3000 boats with colors green and red
+		 // Even boats are red while odd ones are green
+		 // Naming: BOOAT_X
+		 
+		 for (int i = 1; i <= 3000; i++) {
+				if (insertBoat(i, "BOAT_" + i, i%2==0 ? "red" : "green", conn) == 0) {
 					System.err.println("insertion of record " + i + " failed");
 					break;
 				} else
 					System.out.println("insertion was successful");
-			}
+		}
 	 }
+	 
 	 @SuppressWarnings("deprecation")
 	public static void populateReserves(Connection conn) {
-		 for (int i = 1; i < 10000; i++) {
-				if (insertReserves(i, i,new Date(1,1,1999), conn) == 0) {
+		 // Each of the first 280 sailors have booked each of the first 125 boats
+		 // This satisfies all 3 queries which will yield 280 results
+		 
+		 for (int i = 1; i <= 280; i++) {
+			 for (int j = 1; j <= 125; j++) {
+				if (insertReserves(i, j ,new Date(1,1,1999), conn) == 0) {
 					System.err.println("insertion of record " + i + " failed");
 					break;
 				} else
-					System.out.println("insertion was successful");
-			}
+					System.out.println("insertion was successful"); 
+			 }
+		}
 	 }
+	 
 	 public static void insertSchema3(Connection connection) {
 			populateSailor(connection);
 			populateBoat(connection);
