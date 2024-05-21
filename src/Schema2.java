@@ -343,7 +343,7 @@ public class Schema2 {
 	 }
 	
 	public static void populateWorksOn(Connection conn) {
-		 for (int i = 1; i < 9200; i++) {
+		 for (int i = 1; i <= 9200; i++) {
 				if (insertWorksOn(i, i, i, conn) == 0) {
 					System.err.println("insertion of record " + i + " failed");
 					break;
@@ -357,7 +357,7 @@ public class Schema2 {
 		// 600 dependents for the first 600 employees with the same first name and sex (M)
 		// This satisfies queries 4 & 5
 		
-		 for (int i = 1; i < 600; i++) {
+		 for (int i = 1; i <= 600; i++) {
 			if (insertDependent(i, "EMPLOYEE_" + i, "M",new Date(1,1,1999),"child", conn) == 0) {
 				System.err.println("insertion of record " + i + " failed");
 				break;

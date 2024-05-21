@@ -149,7 +149,7 @@ public class Schema3 {
 		 // Naming: BOOAT_X
 		 
 		 for (int i = 1; i <= 3000; i++) {
-				if (insertBoat(i, "BOAT_" + i, i%2==0 ? "red" : "green", conn) == 0) {
+				if (insertBoat(i, "BOAT_" + i, i==1 ? "red" : i==103 ? "green" : "yellow", conn) == 0) {
 					System.err.println("insertion of record " + i + " failed");
 					break;
 				} else
@@ -159,26 +159,38 @@ public class Schema3 {
 	 
 	 @SuppressWarnings("deprecation")
 	public static void populateReserves(Connection conn) {
-		 // Each of the first 280 sailors have booked each of the first 125 boats
-		 // This satisfies all 3 queries which will yield 280 results
-		 
-		 for (int i = 1; i <= 275; i++) {
-			 for (int j = 1; j <= 125; j++) {
-				if (insertReserves(i, j*2 ,new Date(1,1,1999), conn) == 0) {
-					System.err.println("insertion of record " + i + " failed");
-					break;
-				} else
-					System.out.println("insertion was successful"); 
-			 }
-		}
 		
-		 for (int i = 1; i <= 625; i++) {
+		 // 1st 500 sailors have reserved boat 103 (green) as well as boat 1 red
+		 for (int i = 1; i <= 500; i++) {
 				if (insertReserves(i, 103 ,new Date(1,1,1999), conn) == 0) {
 					System.err.println("insertion of record " + i + " failed");
 					break;
 				} else
 					System.out.println("insertion was successful"); 
+				
+				if (insertReserves(i, 1 ,new Date(1,1,1999), conn) == 0) {
+					System.err.println("insertion of record " + i + " failed");
+					break;
+				} else
+					System.out.println("insertion was successful");
 		}
+		 
+		 // The rest of the 35k reserves:
+		 for (int i = 1001; i <= 18000; i++) {
+				if (insertReserves(i, 3 ,new Date(1,1,1999), conn) == 0) {
+					System.err.println("insertion of record " + i + " failed");
+					break;
+				} else
+					System.out.println("insertion was successful");
+				
+				if (insertReserves(i, 4 ,new Date(1,1,1999), conn) == 0) {
+					System.err.println("insertion of record " + i + " failed");
+					break;
+				} else
+					System.out.println("insertion was successful"); 
+		 }
+		 
+		
 	 }
 	 
 	 public static void insertSchema3(Connection connection) {
