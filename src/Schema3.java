@@ -162,14 +162,22 @@ public class Schema3 {
 		 // Each of the first 280 sailors have booked each of the first 125 boats
 		 // This satisfies all 3 queries which will yield 280 results
 		 
-		 for (int i = 1; i <= 280; i++) {
+		 for (int i = 1; i <= 275; i++) {
 			 for (int j = 1; j <= 125; j++) {
-				if (insertReserves(i, j ,new Date(1,1,1999), conn) == 0) {
+				if (insertReserves(i, j*2 ,new Date(1,1,1999), conn) == 0) {
 					System.err.println("insertion of record " + i + " failed");
 					break;
 				} else
 					System.out.println("insertion was successful"); 
 			 }
+		}
+		
+		 for (int i = 1; i <= 625; i++) {
+				if (insertReserves(i, 103 ,new Date(1,1,1999), conn) == 0) {
+					System.err.println("insertion of record " + i + " failed");
+					break;
+				} else
+					System.out.println("insertion was successful"); 
 		}
 	 }
 	 

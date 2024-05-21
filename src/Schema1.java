@@ -457,17 +457,15 @@ public class Schema1 {
 	}
 
 	public static void populateClassroom(Connection conn) {
-		// 10 buildings with 100 rooms each
+		// 1000 buildings with 1 room each
 		// Capacity is 100 for all rooms
 		
-		for (int i = 1; i <= 10; i++) {
-			for (int j = 1; j <= 100; j++) {
-				if (insertClassroom(i, j, 100, conn) == 0) {
+		for (int i = 1; i <= 1000; i++) {
+				if (insertClassroom(i, i, 100, conn) == 0) {
 					System.err.println("insertion of record " + i + " failed");
 					break;
 				} else
 					System.out.println("insertion was successful");
-			}
 		}
 	}
 
@@ -475,7 +473,7 @@ public class Schema1 {
 	public static void populateTimeSlot(Connection conn) {
 		// We don't change anything here since it isn't required
 		
-		for (int i = 1; i < 10000; i++) {
+		for (int i = 1; i <= 10000; i++) {
 			if (insertTimeSlot(i, "day" + i, new Time(12, 0, 0), new Time(13,
 					0, 0), conn) == 0) {
 				System.err.println("insertion of record " + i + " failed");
@@ -527,7 +525,7 @@ public class Schema1 {
 	public static void populatePrerequiste(Connection conn) {
 		// Every course of the 1500 has itself as a prerequisite
 		
-		for (int i = 1; i < 1500; i++) {
+		for (int i = 1; i <= 1500; i++) {
 			if (insertPrerequiste(i%1500==0 ? 1500 : i%1500, i%1500==0 ? 1500 : i%1500, conn) == 0) {
 				System.err.println("insertion of record " + i + " failed");
 				break;
@@ -540,10 +538,20 @@ public class Schema1 {
 		// We have 10 semesters and 5 years for a total of 250 records per semester per year
 		// Sections are divided almost equally among instructors, courses, rooms and buildings
 		
-		for (int i = 1; i < 10000; i++) {
+		for (int i = 1; i <= 9750; i++) {
 			if (insertSection(i, i%10==0 ? 10 : i%10, 2020 + i%5,
 				i%1500==0 ? 1500 : i%1500, i%1500==0 ? 1500 : i%1500,
-				i%10==0 ? 10 : i%10, i%100==0 ? 100 : i%10, conn) == 0) {
+				i%1000==0 ? 1000 : i%1000, i%1000==0 ? 1000 : i%1000, conn) == 0) {
+				System.err.println("insertion of record " + i + " failed");
+				break;
+			} else
+				System.out.println("insertion was successful");
+		}
+		
+		for (int i = 9751; i <= 10000; i++) {
+			if (insertSection(i, 1, 2024,
+				i%1500==0 ? 1500 : i%1500, i%1500==0 ? 1500 : i%1500,
+				i%1000==0 ? 1000 : i%1000, i%1000==0 ? 1000 : i%1000, conn) == 0) {
 				System.err.println("insertion of record " + i + " failed");
 				break;
 			} else
@@ -555,7 +563,7 @@ public class Schema1 {
 		// Each student has 8 sections in various semesters
 		
 		double j = 0.7;
-		for (int i = 1; i < 10000; i++) {
+		for (int i = 1; i <= 10000; i++) {
 			if (j == 5)
 				j = 0.7;
 			if (insertTakes(i%1250==0 ? 1250 : i%1250, i, j, conn) == 0) {
@@ -570,7 +578,7 @@ public class Schema1 {
 	public static void populateSectionTime(Connection conn) {
 		// We don't change anything here since it isn't required
 		
-		for (int i = 1; i < 10000; i++) {
+		for (int i = 1; i <= 10000; i++) {
 			if (insertSectionTime(i, i, conn) == 0) {
 				System.err.println("insertion of record " + i + " failed");
 				break;

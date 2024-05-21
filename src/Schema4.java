@@ -390,7 +390,7 @@ public class Schema4 {
 			// Insert 10k reviewers
 			// Naming: REVIEWER_X
 			
-			 for (int i = 1; i < 10000; i++) {
+			 for (int i = 1; i <= 10000; i++) {
 
 					if (insertReviewer(i, "REVIEWER_" + i, conn) == 0) {
 						System.err.println("insertion of record " + i + " failed");
@@ -404,7 +404,7 @@ public class Schema4 {
 			// Insert 10k genres
 			// Naming: GENRE_X
 			
-			 for (int i = 1; i < 10000; i++) {
+			 for (int i = 1; i <= 10000; i++) {
 
 					if (insertGenres(i, "GENRE_" + i, conn) == 0) {
 						System.err.println("insertion of record " + i + " failed");
@@ -446,10 +446,10 @@ public class Schema4 {
 		 }
 		
 		public static void populateMovieDirection(Connection conn) {
-			// Insert 10k movie directions the first 350 of which are directed by Woddy Allen
+			// Insert 6k movie directions the first 350 of which are directed by Woddy Allen
 			// Hence Eyes Wide Shut was directed by Woddy Allen
 			
-			 for (int i = 1; i < 10000; i++) {
+			 for (int i = 1; i <= 6000; i++) {
 
 					if (insertMovieDirection( i<=350 ? 1 : i , i, conn) == 0) {
 						System.err.println("insertion of record " + i + " failed");
@@ -462,9 +462,9 @@ public class Schema4 {
 		public static void populateMovieCast(Connection conn) {
 			// Insert 10k movie casts the first 222 of which are the movie Annie Hall
 			
-			 for (int i = 1; i < 10000; i++) {
+			 for (int i = 1; i <= 10000; i++) {
                   
-					if (insertMovieCast(i, i<=222 ? 1 : i,"ROLE_" + i, conn) == 0) {
+					if (insertMovieCast(i, i<=222 ? 1 : i==223 ? 2 : i,"ROLE_" + i, conn) == 0) {
 						System.err.println("insertion of record " + i + " failed");
 						break;
 					} else
@@ -473,7 +473,7 @@ public class Schema4 {
 		 }
 		
 		public static void populateMovieGenres(Connection conn) {
-			 for (int i = 1; i < 10000; i++) {
+			 for (int i = 1; i <= 10000; i++) {
 
 					if (insertMovieGenres(i, i, conn) == 0) {
 						System.err.println("insertion of record " + i + " failed");
@@ -484,7 +484,7 @@ public class Schema4 {
 		 }
 		
 		public static void populateRating(Connection conn) {
-			 for (int i = 1; i < 10000; i++) {
+			 for (int i = 1; i <= 10000; i++) {
                     
 					if (insertRating(i, i, i,i, conn) == 0) {
 						System.err.println("insertion of record " + i + " failed");

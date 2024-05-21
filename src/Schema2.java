@@ -262,20 +262,43 @@ public class Schema2 {
 	 /////////////////////////////////////////////// Data Population Methods //////////////////////////////////////////////////////////////
 	 @SuppressWarnings("deprecation")
 	public static void populateEmployee(Connection conn) {
-		 for (int i = 1; i < 10000; i++) {
-                String result = "M";
-                if (i > 5000) 
-                	result = "F";
-				if (insertEmployee("Employee" + i, "M" + i,"Employee" + i, i, new Date(22,1,1999), "address" + i ,result,i,i,i, conn) == 0) {
+		 
+		 // Insert 600 employees in department 1 with salary = 70k and lName = "employee1"
+		 for (int i = 1; i <= 600; i++) {
+			if (insertEmployee("EMPLOYEE_" + i, "M" + i,"employee1", i, new Date(22,1,1999), "address" + i ,"M",70000,i,1, conn) == 0) {
+				System.err.println("insertion of record " + i + " failed");
+				break;
+			} else
+				System.out.println("insertion was successful");
+		}
+		 
+		 // Insert 400 employees in department 5 with salary = 60k
+		 for (int i = 601; i <= 1000; i++) {
+			if (insertEmployee("EMPLOYEE_" + i, "M" + i,"EMPLOYEE_" + i, i, new Date(22,1,1999), "address" + i ,"M",60000,i,5, conn) == 0) {
+				System.err.println("insertion of record " + i + " failed");
+				break;
+			} else
+				System.out.println("insertion was successful");
+		}
+		
+		 // Insert 1000 employees for each department
+		 // First 100 department employees make 50k while the rest make 20k
+		 
+		 for (int i = 1; i <= 150; i++) {
+			 for (int j = 1; j <= 1000; j++) {
+				if (insertEmployee("EMPLOYEE_" + j + "_" + i,
+					"M_" + j + "_" + i,
+					"EMPLOYEE_" + j + "_" + i,
+					i*1000 + j, new Date(22,1,1999), "address" ,"M", 
+					i<=100 ? 50000 : 20000,
+					i*1000 + j,
+					i, conn) == 0) {
 					System.err.println("insertion of record " + i + " failed");
 					break;
 				} else
-					System.out.println("insertion was successful");
-			}
-		 int i = 10000;
-			insertEmployee("Employee" + i, "M" + i,"Employee" + i, i, new Date(22,1,1999), "address" + i ,"M",i,i,1, conn);
-          i++;
-			insertEmployee("Employee" + i, "M" + i,"Employee" + i, i, new Date(22,1,1999), "address" + i ,"M",i,i,1, conn);
+					System.out.println("insertion was successful"); 
+			 }
+		}
 
 	 }
 	 
@@ -307,8 +330,11 @@ public class Schema2 {
 	 }
 	
 	public static void populateProject(Connection conn) {
-		 for (int i = 1; i < 10000; i++) {
-				if (insertProject("Project" + i, i,"Location1" + i,i, conn) == 0) {
+		// Insert 9200 projects
+		// Naming PROJECT_X
+		
+		 for (int i = 1; i <= 9200; i++) {
+				if (insertProject("PROJECT_" + i, i,"Location" + i, i%150==0 ? 150 : i%150, conn) == 0) {
 					System.err.println("insertion of record " + i + " failed");
 					break;
 				} else
@@ -317,7 +343,7 @@ public class Schema2 {
 	 }
 	
 	public static void populateWorksOn(Connection conn) {
-		 for (int i = 1; i < 10000; i++) {
+		 for (int i = 1; i < 9200; i++) {
 				if (insertWorksOn(i, i, i, conn) == 0) {
 					System.err.println("insertion of record " + i + " failed");
 					break;
